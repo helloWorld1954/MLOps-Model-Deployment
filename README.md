@@ -196,19 +196,6 @@ This submission is my own work, produced in accordance with the UWI academic-int
 
 ---
 
-## Author
-
-- **Name:** [Your name]
-- **Student ID:** [Your student ID]
-- **Course:** COMP 3610 — Big Data Analytics
-- **Lecturer:** Mr. Sergio Mathurin (sergio.mathurin@uwi.edu)
-- **Tutor:** Mr. Anton Greenridge (anton.greenridge@my.uwi.edu)
-
-This is the fastest path to a running prediction service.
-
-[README.md](https://github.com/user-attachments/files/26849895/README.md)
-
-
 AI Tools Used
 In line with the course's academic-integrity policy, the following AI tools were used during this assignment:
 
