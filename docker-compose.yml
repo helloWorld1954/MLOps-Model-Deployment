@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # FastAPI prediction service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: taxi-tip-api
+    ports:
+      - "8000:8000"
+    environment:
+      - LOG_LEVEL=INFO
+      - MODEL_PATH=rf_model.pkl
+      - METRICS_PATH=model_metrics.json
+    volumes:
+      # Optional: mount model directory for dynamic updates
+      - ./:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  # Optional: MLflow tracking server (bonus)
+  mlflow:
+    image: python:3.11-slim
+    container_name: mlflow-server
+    working_dir: /mlflow
+    volumes:
+      - mlflow-data:/mlflow/mlruns
+    environment:
+      - BACKEND_STORE_URI=file:///mlflow/mlruns
+      - DEFAULT_ARTIFACT_ROOT=/mlflow/mlruns
+    ports:
+      - "5000:5000"
+    command: >
+      bash -c "pip install mlflow &&
+               mlflow server
+               --backend-store-uri file:///mlflow/mlruns
+               --default-artifact-root /mlflow/mlruns
+               --host 0.0.0.0
+               --port 5000"
+    restart: unless-stopped
+
+volumes:
+  mlflow-data:
+    driver: local
+
+networks:
+  default:
+    name: taxi-tip-network
